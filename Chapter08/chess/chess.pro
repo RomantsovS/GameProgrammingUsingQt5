@@ -12,6 +12,7 @@ SOURCES += \
     chessalgorithm.cpp \
     chessboard.cpp \
     chessview.cpp \
+    foxandhounds.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -19,6 +20,7 @@ HEADERS += \
     chessalgorithm.h \
     chessboard.h \
     chessview.h \
+    foxandhounds.h \
     mainwindow.h
 
 FORMS += \
