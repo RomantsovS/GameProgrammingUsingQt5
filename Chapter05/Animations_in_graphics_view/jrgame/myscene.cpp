@@ -3,6 +3,7 @@
 
 #include <QApplication>
 #include <QEasingCurve>
+#include <QRandomGenerator>
 
 MyScene::MyScene() : m_jumpAnimation(new QPropertyAnimation(this))
 {
@@ -92,7 +93,7 @@ void MyScene::initPlayField()
     const int xRange = (m_maxX - m_minX) * 0.94;
     for(int i = 0; i < 10; ++i) {
         Coin *c = new Coin(m_coins);
-        c->setPos(m_minX + qrand() % xRange, qrand() % m_jumpHeight);
+        c->setPos(m_minX + QRandomGenerator::global()->bounded(xRange), QRandomGenerator::global()->bounded(m_jumpHeight));
 //        c->setPos(50, 50);
     }
     addItem(m_coins);

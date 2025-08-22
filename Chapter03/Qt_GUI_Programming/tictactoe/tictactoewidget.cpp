@@ -1,24 +1,23 @@
 #include "tictactoewidget.h"
 
 #include <QGridLayout>
-#include <QSignalMapper>
 
 TicTacToeWidget::TicTacToeWidget(QWidget *parent)
     : QWidget{parent}
 {
     QGridLayout* gridLayout = new QGridLayout(this);
-    QSignalMapper *mapper = new QSignalMapper(this);
     for(int row = 0; row < 3; ++row) {
         for(int col = 0; col < 3; ++col) {
             QPushButton* button = new QPushButton(" ");
             button->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
             gridLayout->addWidget(button, row, col);
             m_board.append(button);
-            mapper->setMapping(button, m_board.count() - 1);
-            connect(button, SIGNAL(clicked()), mapper, SLOT(map()));
+            int index = m_board.count() - 1;  // capture index
+            connect(button, &QPushButton::clicked, this, [=]() {
+                handleButtonClick(index);
+            });
         }
     }
-    connect(mapper, SIGNAL(mapped(int)), this, SLOT(handleButtonClick(int)));
 }
 
 void TicTacToeWidget::initNewGame()
