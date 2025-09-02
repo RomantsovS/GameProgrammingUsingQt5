@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Clock.qml</file>
+        <file>Needle.qml</file>
+    </qresource>
+</RCC>
