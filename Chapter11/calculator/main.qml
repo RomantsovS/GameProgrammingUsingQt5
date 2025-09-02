@@ -9,5 +9,6 @@ Window {
     title: qsTr("Calculator")
     Calculator {
         anchors.fill: parent
+        objectName: "calculator"
     }
 }

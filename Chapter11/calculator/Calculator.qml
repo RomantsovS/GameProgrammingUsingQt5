@@ -10,7 +10,22 @@ Item {
     property alias argument2: argument2
     property alias operationMultiply: operationMultiply
     property alias operationAdd: operationAdd
+    property alias operationFactorial: operationFactorial
     property alias argument1: argument1
+
+    state: {
+        if (operationFactorial.checked) {
+            return "single_argument"
+        } else {
+            return ""
+        }
+    }
+    transitions: Transition {
+        PropertyAnimation {
+            property: "opacity"
+            duration: 300
+        }
+    }
 
     reset.onClicked: {
         argument1.text = "0"
@@ -23,8 +38,8 @@ Item {
         var value2 = parseFloat(argument2.text)
         if (operationMultiply.checked) {
             return value1 * value2
-            // } else if (operationFactorial.checked) {
-            //     return advancedCalculator.factorial(value1)
+        } else if (operationFactorial.checked) {
+            return advancedCalculator.factorial(value1)
         } else {
             return value1 + value2
         }
@@ -62,6 +77,13 @@ Item {
                 height: 16
                 text: qsTr("x")
             }
+
+            RadioButton {
+                id: operationFactorial
+                width: 28
+                height: 16
+                text: qsTr("!")
+            }
         }
 
         TextField {
@@ -86,8 +108,19 @@ Item {
 
         Button {
             id: reset
+            objectName: "buttonReset"
             text: qsTr("reset")
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
         }
     }
+    states: [
+        State {
+            name: "single_argument"
+
+            PropertyChanges {
+                target: argument2
+                opacity: 0
+            }
+        }
+    ]
 }
