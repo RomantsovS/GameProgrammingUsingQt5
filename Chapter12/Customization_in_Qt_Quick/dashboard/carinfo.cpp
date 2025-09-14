@@ -19,8 +19,8 @@ CarInfo::CarInfo(QWidget *parent)
 
     connect(ui->speedSlider, &QSlider::valueChanged,
             ui->speedBox, &QSpinBox::setValue);
-    connect(this, &CarInfo::distanceChanged,
-            ui->distanceSlider, &QSlider::setValue);
+    connect(this, &CarInfo::speedChanged,
+            ui->speedSlider, &QSlider::setValue);
 
     // connect(ui->gearBox, SIGNAL(valueChanged(int)),
     //         m_engine, SLOT(setGear(int)));

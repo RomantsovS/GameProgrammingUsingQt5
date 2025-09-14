@@ -58,6 +58,9 @@
      <height>25</height>
     </rect>
    </property>
+   <property name="maximum">
+    <number>250</number>
+   </property>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
@@ -80,6 +83,9 @@
      <width>160</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="maximum">
+    <number>250</number>
    </property>
    <property name="orientation">
     <enum>Qt::Orientation::Horizontal</enum>

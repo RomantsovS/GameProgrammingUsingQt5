@@ -17,8 +17,15 @@ qt_add_qml_module(appdashboard
     VERSION 1.0
     QML_FILES
         Main.qml
-SOURCES carinfo.h carinfo.cpp
-RESOURCES carinfo.ui
+        Needle.qml
+        Label.qml
+    SOURCES
+        carinfo.h
+        carinfo.cpp
+    RESOURCES
+        carinfo.ui
+        qml.qrc
+        dashboard.png
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
