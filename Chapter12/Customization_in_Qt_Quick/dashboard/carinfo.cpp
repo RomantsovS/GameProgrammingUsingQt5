@@ -7,6 +7,10 @@ CarInfo::CarInfo(QWidget *parent)
 {
     ui->setupUi(this);
 
+    m_engine = new CarInfoEngine(this);
+    m_engine->setGear(ui->gearBox->value());
+    m_engine->setRpm(ui->rpmBox->value());
+
     connect(ui->speedBox, &QSpinBox::valueChanged,
             this, &CarInfo::speedChanged);
     connect(ui->distanceBox, &QSpinBox::valueChanged,
@@ -22,14 +26,23 @@ CarInfo::CarInfo(QWidget *parent)
     connect(this, &CarInfo::speedChanged,
             ui->speedSlider, &QSlider::setValue);
 
-    // connect(ui->gearBox, SIGNAL(valueChanged(int)),
-    //         m_engine, SLOT(setGear(int)));
-    // connect(ui->rpmBox, SIGNAL(valueChanged(int)),
-    //         m_engine, SLOT(setRpm(int)));
-    // connect(m_engine, SIGNAL(gearChanged(int)),
-    //         ui->gearBox, SLOT(setValue(int)));
-    // connect(m_engine, SIGNAL(rpmChanged(int)),
-    //         ui->rpmBox, SLOT(setValue(int)));
+    connect(ui->gearBox, &QSpinBox::valueChanged,
+            m_engine, &CarInfoEngine::setGear);
+    connect(ui->rpmBox, &QSpinBox::valueChanged,
+            m_engine, &CarInfoEngine::setRpm);
+    connect(m_engine, &CarInfoEngine::gearChanged,
+            ui->gearBox, &QSpinBox::setValue);
+    connect(m_engine, &CarInfoEngine::rpmChanged,
+            ui->rpmBox, &QSpinBox::setValue);
+
+    connect(ui->gearSlider, &QSlider::valueChanged,
+            m_engine, &CarInfoEngine::setGear);
+    connect(ui->rpmSlider, &QSlider::valueChanged,
+            m_engine, &CarInfoEngine::setRpm);
+    connect(m_engine, &CarInfoEngine::gearChanged,
+            ui->gearSlider, &QSlider::setValue);
+    connect(m_engine, &CarInfoEngine::rpmChanged,
+            ui->rpmSlider, &QSlider::setValue);
 }
 
 CarInfo::~CarInfo()
@@ -48,4 +61,8 @@ double CarInfo::distance() const {
 }
 void CarInfo::setDistance(double d) {
     ui->distanceBox->setValue(d);
+}
+
+CarInfoEngine *CarInfo::engine() const {
+    return m_engine;
 }

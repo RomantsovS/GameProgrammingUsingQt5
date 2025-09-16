@@ -35,6 +35,9 @@
      <height>16</height>
     </rect>
    </property>
+   <property name="maximum">
+    <number>9999</number>
+   </property>
    <property name="orientation">
     <enum>Qt::Orientation::Horizontal</enum>
    </property>
@@ -47,6 +50,9 @@
      <width>42</width>
      <height>25</height>
     </rect>
+   </property>
+   <property name="maximum">
+    <number>9999</number>
    </property>
   </widget>
   <widget class="QSpinBox" name="speedBox">
@@ -127,7 +133,7 @@
     <enum>Qt::Orientation::Horizontal</enum>
    </property>
   </widget>
-  <widget class="QSpinBox" name="spinBox_4">
+  <widget class="QSpinBox" name="gearBox">
    <property name="geometry">
     <rect>
      <x>340</x>
@@ -135,6 +141,12 @@
      <width>42</width>
      <height>25</height>
     </rect>
+   </property>
+   <property name="minimum">
+    <number>-1</number>
+   </property>
+   <property name="maximum">
+    <number>6</number>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
@@ -150,7 +162,7 @@
     <string>Gear</string>
    </property>
   </widget>
-  <widget class="QSlider" name="gearBox">
+  <widget class="QSlider" name="gearSlider">
    <property name="geometry">
     <rect>
      <x>350</x>
@@ -158,6 +170,12 @@
      <width>16</width>
      <height>160</height>
     </rect>
+   </property>
+   <property name="minimum">
+    <number>-1</number>
+   </property>
+   <property name="maximum">
+    <number>5</number>
    </property>
    <property name="orientation">
     <enum>Qt::Orientation::Vertical</enum>
