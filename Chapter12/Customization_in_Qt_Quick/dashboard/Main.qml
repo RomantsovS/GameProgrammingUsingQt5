@@ -81,6 +81,12 @@ Window {
                 anchors.centerIn: parent
                 length: parent.width * 0.35
                 rotation: 120 + 90 + (leftContainer.value * 35)
+
+                Behavior on rotation {
+                    SmoothedAnimation {
+                        velocity: 100
+                    }
+                }
             }
         }
         Item {
@@ -150,6 +156,12 @@ Window {
                 size: 4
                 rotation: 210 + (middleContainer.value * 1.2)
                 color: "yellow"
+
+                Behavior on rotation {
+                    SmoothedAnimation {
+                        velocity: 50
+                    }
+                }
             }
         }
         Item {
