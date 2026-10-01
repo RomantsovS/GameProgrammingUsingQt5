@@ -1,115 +1,165 @@
 import QtQuick
+import "coins.js" as Coins
 
 Window {
     id: root
     width: 640
-    height: 480
+    height: 380
     visible: true
     title: qsTr("Hello World")
-    property int dayLength: 10000 // 1 minute
 
-    Image {
-        id: sky
-        source: "images/sky.png"
-        anchors.fill: parent
+    ParallaxScene {
+        id: scene
+        width: 1500
+        height: 380
+        anchors.bottom: parent.bottom
+        currentPos: player.x
 
-        Image {
-            source: "images/trees.png"
-            x: -200
+        ParallaxLayer {
+            factor: 7.5
+            width: sky.width
+            height: sky.height
             anchors.bottom: parent.bottom
-        }
-        Image {
-            source: "images/grass.png"
-            anchors.bottom: parent.bottom
-        }
 
-        Item {
-            id: sun
-            x: 140
-            y: root.height - 170
-            Rectangle {
-                id: sunVisual
-                width: 40
-                height: width
-                radius: width / 2
-                color: "yellow"
-                anchors.centerIn: parent
-
-                SequentialAnimation on color {
-                    ColorAnimation {
-                        from: "red"
-                        to: "yellow"
-                        duration: 0.2 * dayLength / 2
-                    }
-                    PauseAnimation {
-                        duration: 2 * 0.8 * dayLength / 2
-                    }
-                    ColorAnimation {
-                        to: "red"
-                        duration: 0.2 * dayLength / 2
-                    }
-                    running: true
-                }
-
-                SequentialAnimation on scale {
-                    NumberAnimation {
-                        from: 1.6
-                        to: 0.8
-                        duration: dayLength / 2
-                        easing.type: Easing.OutCubic
-                    }
-                    NumberAnimation {
-                        from: 0.8
-                        to: 1.6
-                        duration: dayLength / 2
-                        easing.type: Easing.InCubic
-                    }
-                }
-            }
-            Item {
-                id: sunRays
-                property int count: 10
-                width: sunVisual.width
-                height: width
-                anchors.centerIn: parent
-                x: 140
-                y: root.height - 170
-                z: -1
-                Repeater {
-                    model: sunRays.count
+            Image {
+                id: sky
+                property int dayLength: 10000 // 1 minute
+                source: "images/sky.png"
+                Item {
+                    id: sun
+                    x: 140
+                    y: sky.height - 170
                     Rectangle {
-                        color: "red"
-                        rotation: index * 360 / sunRays.count
-                        anchors.fill: parent
+                        id: sunVisual
+                        width: 40
+                        height: width
+                        radius: width / 2
+                        color: "yellow"
+                        anchors.centerIn: parent
+
+                        SequentialAnimation on color {
+                            ColorAnimation {
+                                from: "red"
+                                to: "yellow"
+                                duration: 0.2 * sky.dayLength / 2
+                            }
+                            PauseAnimation {
+                                duration: 2 * 0.8 * sky.dayLength / 2
+                            }
+                            ColorAnimation {
+                                to: "red"
+                                duration: 0.2 * sky.dayLength / 2
+                            }
+                            running: true
+                        }
+                    }
+                    SequentialAnimation on scale {
+                        NumberAnimation {
+                            from: 1.6
+                            to: 0.8
+                            duration: sky.dayLength / 2
+                            easing.type: Easing.OutCubic
+                        }
+                        NumberAnimation {
+                            from: 0.8
+                            to: 1.6
+                            duration: sky.dayLength / 2
+                            easing.type: Easing.InCubic
+                        }
                     }
                 }
             }
+
+            NumberAnimation {
+                target: sun
+                property: "x"
+                from: 0
+                to: root.width
+                duration: sky.dayLength
+                running: true
+            }
+            SequentialAnimation {
+                running: true
+                NumberAnimation {
+                    target: sun
+                    property: "y"
+                    from: root.height + sunVisual.height
+                    to: root.height - 270
+                    duration: sky.dayLength / 2
+                    easing.type: Easing.OutCubic
+                }
+                NumberAnimation {
+                    target: sun
+                    property: "y"
+                    to: root.height + sunVisual.height
+                    duration: sky.dayLength / 2
+                    easing.type: Easing.InCubic
+                }
+            }
+        }
+        ParallaxLayer {
+            factor: 2.5
+            width: trees.width
+            height: trees.height
+            anchors.bottom: parent.bottom
+            Image {
+                id: trees
+                source: "images/trees.png"
+            }
+        }
+        ParallaxLayer {
+            factor: 0
+            width: grass.width
+            height: grass.height
+            anchors.bottom: parent.bottom
+            Image {
+                id: grass
+                source: "images/grass.png"
+            }
         }
 
-        NumberAnimation {
-            targets: [sun]
-            property: "x"
-            from: 0
-            to: root.width
-            duration: root.dayLength
-            running: true
-        }
-        SequentialAnimation {
-            running: true
-            NumberAnimation {
-                target: sun
-                property: "y"
-                from: root.height + sunVisual.height
-                to: root.height - 270
-                duration: dayLength / 2
-                easing.type: Easing.OutCubic
+        Player {
+            id: player
+            x: 40
+
+            function checkCollisions() {
+                var result = Coins.coins.collisionsWith(player)
+                if (result.length === 0)
+                    return
+                result.forEach(function (coin) {
+                    coin.hit()
+                })
+                Coins.coins.remove(
+                            result) // prevent the coin from being hit again
             }
-            NumberAnimation {
-                target: sun
-                property: "y"
-                to: root.height + sunVisual.height
-                duration: dayLength / 2
-                easing.type: Easing.InCubic
+
+            onXChanged: {
+                checkCollisions()
+            }
+            onYChanged: {
+                checkCollisions()
+            }
+        }
+
+        Component {
+            id: coinGenerator
+            Coin {}
+        }
+
+        Timer {
+            id: coinTimer
+            interval: 1000
+            repeat: true
+            running: true
+
+            onTriggered: {
+                var cx = Math.floor(Math.random() * scene.width)
+                var cy = scene.height - 60 - Math.floor(Math.random() * 60)
+                var coin = coinGenerator.createObject(scene, {
+                                                          "x": cx,
+                                                          "y": cy
+                                                      })
+                Coins.coins.push(coin)
             }
         }
     }

@@ -3,5 +3,14 @@
         <file>images/grass.png</file>
         <file>images/sky.png</file>
         <file>images/trees.png</file>
+        <file>images/elephant.png</file>
+        <file>images/walking_1.png</file>
+        <file>images/walking_2.png</file>
+        <file>images/walking_3.png</file>
+        <file>images/walking_4.png</file>
+        <file>images/walking_5.png</file>
+        <file>images/walking_6.png</file>
+        <file>images/walking_7.png</file>
+        <file>images/sprite.png</file>
     </qresource>
 </RCC>
